@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 140" role="img" aria-labelledby="title desc">
+  <title id="title">Omnitrix Logo</title>
+  <desc id="desc">Wordmark logo for Omnitrix with a blue gradient and tagline Next Generation IT Solutions</desc>
+
+  <defs>
+    <linearGradient id="omniGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="50%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="taglineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#94a3b8"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background glow for subtle emphasis -->
+  <g opacity="0.18">
+    <ellipse cx="130" cy="60" rx="120" ry="38" fill="#3b82f6"/>
+  </g>
+
+  <!-- Wordmark -->
+  <g font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, sans-serif">
+    <text x="20" y="75" font-size="64" font-weight="800" fill="url(#omniGradient)">Omnitrix</text>
+    <text x="24" y="110" font-size="18" font-weight="600" fill="url(#taglineGradient)">Next Generation IT Solutions</text>
+  </g>
+</svg>
