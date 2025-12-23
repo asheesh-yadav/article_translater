@@ -382,7 +382,7 @@ const handleImproveText = async (mode: string) => {
               onClick={() => setActiveMode('write')}
               className={`px-4 py-1.5 text-sm ${activeMode === 'write' ? 'bg-blue-50 text-blue-700' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
             >
-              Omnitrix Write
+              LexiMorph Write
             </button>
           </div>
         </div>

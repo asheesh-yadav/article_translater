@@ -83,7 +83,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
 
   const testimonials = [
     {
-      quote: 'Omnitrix has transformed our localization workflow—fast, accurate, and a joy to use.',
+      quote: 'LexiMorph has transformed our localization workflow—fast, accurate, and a joy to use.',
       name: 'Ava Johnson',
       role: 'Localization Lead, WaveAI',
     },
@@ -139,7 +139,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
             Welcome to{' '}
             <span className="relative inline-block">
               <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient">
-                Omnitrix
+               LexiMorph
               </span>
               <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 blur-2xl opacity-20 -z-10"></div>
             </span>
@@ -223,7 +223,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
         <div className="mb-20">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black text-white mb-4">Loved by teams</h2>
-            <p className="text-xl text-slate-400 max-w-2xl mx-auto">Real stories from people using Omnitrix every day</p>
+            <p className="text-xl text-slate-400 max-w-2xl mx-auto">Real stories from people using LexiMorph every day</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {testimonials.map((t, idx) => (
@@ -321,7 +321,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
                 Ready to Transform Your Workflow?
               </h2>
               <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
-                Join thousands of users who trust Omnitrix for their translation and writing needs
+                Join thousands of users who trust LexiMorph for their translation and writing needs
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -366,9 +366,9 @@ export default function HomePage({ onNavigate }: HomePageProps) {
   <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8 text-slate-400">
 
     <div>
-      <img src="/omnitrix-logo.svg" alt="Omnitrix" className="h-10 mb-4" />
+      <img src="/omnitrix-logo.png" alt="LexiMorph" className="h-10 mb-4" />
       <p className="text-sm leading-relaxed">
-        Omnitrix is an AI-powered translation & writing platform trusted by teams worldwide.
+        LexiMorph is an AI-powered translation & writing platform trusted by teams worldwide.
       </p>
     </div>
 
@@ -400,7 +400,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
   </div>
 
   <div className="border-t border-white/10 text-center py-6 text-xs text-slate-500">
-    © {new Date().getFullYear()} Omnitrix. All rights reserved.
+    © {new Date().getFullYear()} LexiMorph. All rights reserved.
   </div>
 </footer>
 

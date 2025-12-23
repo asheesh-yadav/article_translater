@@ -315,13 +315,13 @@ export default function AuthTab({ currentUser, onLogin, onLogout }: AuthTabProps
               </div>
               <button type="submit" className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700">{userMode === 'login' ? 'Login' : userMode === 'register' ? 'Create account' : 'Reset password'}</button>
               {userMode === 'login' && demoMode && <p className="mt-2 text-xs text-gray-500">Accounts created here are stored locally for demo.</p>}
-              {userMode === 'login' && (
+              {/* {userMode === 'login' && (
                 <div className="mt-3 flex items-center gap-2">
                   <button type="button" onClick={sendMagicLink} className="px-3 py-2 rounded-lg text-sm border bg-white text-gray-700 border-gray-300 hover:bg-gray-50">Send magic link</button>
                   <button type="button" onClick={() => socialLogin('google')} className="px-3 py-2 rounded-lg text-sm border bg-white text-gray-700 border-gray-300 hover:bg-gray-50">Login with Google</button>
                   <button type="button" onClick={() => socialLogin('github')} className="px-3 py-2 rounded-lg text-sm border bg-white text-gray-700 border-gray-300 hover:bg-gray-50">Login with GitHub</button>
                 </div>
-              )}
+              )} */}
             </form>
 
             {/* Admin login */}

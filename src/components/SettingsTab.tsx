@@ -323,7 +323,7 @@ export default function SettingsTab({ formality, onFormalityChange, showEditingS
 
         {/* Omnitrix Write options */}
         <div className="mt-6 bg-white border border-gray-200 rounded-xl p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Omnitrix Write options</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">LexiMorph Write options</h3>
           <div className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Default Ask AI action</label>

@@ -11,7 +11,7 @@ export default function HelpSupport() {
       <div className="max-w-6xl mx-auto py-12 px-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Help &amp; Support</h1>
         <p className="text-gray-600 mb-6">
-          Get help with using Omnitrix Translator and contact our support team.
+          Get help with using LexiMorph Translator and contact our support team.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
           <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-6 text-left">
@@ -21,7 +21,7 @@ export default function HelpSupport() {
               <li>Translate text: paste text, choose source/target, view result.</li>
               <li>Translate files: upload DOCX/PPTX/XLSX/TXT and select target.</li>
               <li>Article translator: paste a URL, Extract, then Preview Translation.</li>
-              <li>Omnitrix Write: type text, choose a style, click Ask AI.</li>
+              <li>LexiMorph Write: type text, choose a style, click Ask AI.</li>
             </ul>
           </div>
 
@@ -34,17 +34,17 @@ export default function HelpSupport() {
               </details>
               <details className="group">
                 <summary className="cursor-pointer font-medium text-slate-800 group-open:text-blue-600">How does Ask AI decide what to do?</summary>
-                <p className="mt-2 text-slate-600">In Settings, set the Default "Ask AI" action for Omnitrix Write. Options include Fluent, Formal, Casual, Expand, Shorten, Simplify, Clarify, Polish, Academic, Friendly, and Persuasive.</p>
+                <p className="mt-2 text-slate-600">In Settings, set the Default "Ask AI" action for LexiMorph Write. Options include Fluent, Formal, Casual, Expand, Shorten, Simplify, Clarify, Polish, Academic, Friendly, and Persuasive.</p>
               </details>
               <details className="group">
                 <summary className="cursor-pointer font-medium text-slate-800 group-open:text-blue-600">Can I limit suggestions?</summary>
-                <p className="mt-2 text-slate-600">Yes. In Settings, set Max suggestions for Omnitrix Write. The UI shows up to 9 suggestions and keeps at least 8 distinct options.</p>
+                <p className="mt-2 text-slate-600">Yes. In Settings, set Max suggestions for LexiMorph Write. The UI shows up to 9 suggestions and keeps at least 8 distinct options.</p>
               </details>
             </div>
           </div>
 
           <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-6 text-left">
-            <h2 className="text-xl font-semibold text-slate-900 mb-2">Omnitrix Write Tips</h2>
+            <h2 className="text-xl font-semibold text-slate-900 mb-2">LexiMorph Write Tips</h2>
             <ul className="text-slate-600 space-y-2">
               <li>Use the chips to pick styles like Formal, Casual, Concise, Expand, Simplify, Clarify, Polish, Academic, Friendly, Persuasive.</li>
               <li>Engine mode: select <span className="font-semibold">AI + Local</span> to merge server and local suggestions, or <span className="font-semibold">Local only</span> to work offline.</li>

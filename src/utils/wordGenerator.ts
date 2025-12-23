@@ -26,7 +26,7 @@ children.push(
   new Paragraph({
     children: [
       new TextRun({
-        text: 'Omnitrix',
+        text: 'LexiMorph',
         bold: true,
         size: 28,
       }),
