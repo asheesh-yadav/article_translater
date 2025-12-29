@@ -1,4 +1,30 @@
 import { ArticleContent, ParsedElement } from '../types/article';
+import { Readability } from '@mozilla/readability';
+
+function tryReadability(html: string): ArticleContent | null {
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const reader = new Readability(doc);
+  const article = reader.parse();
+
+  if (!article || !article.textContent) return null;
+
+  const content = article.textContent
+    .split('\n')
+    .map(t => t.trim())
+    .filter(t => t.length > 20)
+    .map(t => ({ type: 'paragraph', content: t }));
+
+  if (content.length < 5) return null;
+
+  return {
+    title: article.title || 'Untitled Article',
+    author: article.byline || undefined,
+    publishDate: undefined,
+    content
+  };
+}
+
+
 
 export async function extractArticle(html: string): Promise<ArticleContent> {
   console.log('extractArticle - HTML length:', html.length);
@@ -14,8 +40,14 @@ export async function extractArticle(html: string): Promise<ArticleContent> {
   const article = findMainContent(document);
   console.log('extractArticle - Main content element:', article?.tagName, article?.className);
 
-  let content = parseContent(article, title);
-  console.log('extractArticle - Initial content parsed:', content.length, 'elements');
+  let content: ParsedElement[] = [];
+
+  if (article) {
+    content = parseContent(article, title);
+    console.log('extractArticle - Initial content parsed:', content.length, 'elements');
+  } else {
+    console.warn('extractArticle - No main content element found');
+  }
 
   if (content.length < 5) {
     console.log('extractArticle - Using fallback extraction (content too short)');
@@ -23,14 +55,22 @@ export async function extractArticle(html: string): Promise<ArticleContent> {
     console.log('extractArticle - Fallback content:', content.length, 'elements');
   }
 
-  if (content.length === 0) {
-    console.warn('extractArticle - No content found! Adding placeholder');
-    content = [{
-      type: 'paragraph',
-      content: 'Unable to extract content from this URL. The page structure may not be supported.'
-    }];
+ if (content.length === 0) {
+  console.warn('extractArticle - No content found, trying Readability fallback');
+
+  const readable = tryReadability(html);
+
+  if (readable && readable.content.length > 0) {
+    console.log('extractArticle - Readability succeeded');
+    return readable;
   }
 
+  console.warn('extractArticle - Readability failed, using placeholder');
+  content = [{
+    type: 'paragraph',
+    content: 'Unable to extract content from this URL. The page structure may not be supported.'
+  }];
+}
   const result = {
     title: title,
     author: extractAuthor(document),
@@ -108,7 +148,7 @@ function removeUnwantedElements(document: Document): void {
   });
 }
 
-function findMainContent(document: Document): Element {
+function findMainContent(document: Document): Element | null {
   const candidates = [
     document.querySelector('article'),
     document.querySelector('[role="main"]'),
@@ -119,6 +159,7 @@ function findMainContent(document: Document): Element {
     document.querySelector('.content'),
     document.querySelector('#content')
   ];
+
   const pick = candidates.find(el => el !== null);
   if (pick) return pick as Element;
 
@@ -133,37 +174,47 @@ function findMainContent(document: Document): Element {
     const links = el.querySelectorAll('a').length;
     const allText = (el.textContent || '').toLowerCase();
     const titleScore = titleText && allText.includes(titleText) ? 20 : 0;
+
     const badWords = [
       'cookie', 'cookies', 'política de cookies', 'privacy policy', 'aviso legal', 'legal notice', 'datenschutz', 'política de privacidad',
       'added to cart', 'view cart', 'continue shopping', 'shopping cart', 'checkout', 'buy now',
       'añadido al carrito', 'ver carrito', 'seguir comprando', 'carrito', 'producto', 'comprar',
       'subscribe', 'newsletter', 'sign up', 'login', 'register', 'account'
     ];
+
     const hasBad = badWords.some(w => allText.includes(w));
     const linkPenalty = links > pCount * 3 ? 10 : 0;
     const base = textLen * 0.001 + pCount * 5 + hCount * 2 + titleScore;
+
     return base - (hasBad ? 50 : 0) - linkPenalty;
   };
 
   if (titleEl) {
     let node: Element | null = titleEl;
     let best: { el: Element; score: number } | null = null;
+
     for (let i = 0; i < 6 && node; i++) {
       const s = scoreContainer(node);
       if (!best || s > best.score) best = { el: node, score: s };
       node = node.parentElement;
     }
+
     if (best) return best.el;
   }
 
   const containers = Array.from(document.querySelectorAll('article, main, section, div'));
   let bestEl: Element | null = null;
   let bestScore = -Infinity;
+
   for (const el of containers) {
     const s = scoreContainer(el);
-    if (s > bestScore) { bestScore = s; bestEl = el; }
+    if (s > bestScore) {
+      bestScore = s;
+      bestEl = el;
+    }
   }
-  return bestEl || document.body;
+
+  return bestEl || document.body || document.documentElement;
 }
 
 function extractTitle(document: Document): string {
@@ -224,7 +275,12 @@ function extractPublishDate(document: Document): string | undefined {
   return undefined;
 }
 
-function parseContent(element: Element, title: string): ParsedElement[] {
+function parseContent(element: Element | null, title: string): ParsedElement[] {
+  if (!element) {
+    console.warn('parseContent - element is null');
+    return [];
+  }
+
   const parsed: ParsedElement[] = [];
   const seenContent = new Set<string>();
   const titleNormalized = title.toLowerCase().trim();
@@ -370,9 +426,8 @@ function shouldSkipElement(element: Element): boolean {
     'añadido al carrito', 'ver carrito', 'seguir comprando', 'carrito', 'producto', 'comprar'
   ];
 
-  const textLower = text.toLowerCase();
   const hasSkipPhrase = skipPhrases.some(phrase =>
-    textLower === phrase || textLower.startsWith(phrase) || textLower.includes(phrase)
+    text === phrase || text.startsWith(phrase) || text.includes(phrase)
   );
 
   if (hasSkipPhrase) return true;
@@ -381,7 +436,6 @@ function shouldSkipElement(element: Element): boolean {
   const linkCount = element.querySelectorAll('a').length;
 
   if (linkCount > 8 && textLength < 500) return true;
-
   if (textLength < 100 && linkCount > 3) return true;
 
   return false;
@@ -434,26 +488,16 @@ function fallbackExtraction(document: Document, title: string): ParsedElement[] 
 
     switch (tagName) {
       case 'h1':
-        if (text.length <= 300) {
-          parsed.push({ type: 'heading2', content: text, level: 2 });
-        }
-        break;
       case 'h2':
-        if (text.length <= 300) {
-          parsed.push({ type: 'heading2', content: text, level: 2 });
-        }
+        if (text.length <= 300) parsed.push({ type: 'heading2', content: text, level: 2 });
         break;
       case 'h3':
-        if (text.length <= 300) {
-          parsed.push({ type: 'heading3', content: text, level: 3 });
-        }
+        if (text.length <= 300) parsed.push({ type: 'heading3', content: text, level: 3 });
         break;
       case 'h4':
       case 'h5':
       case 'h6':
-        if (text.length <= 300) {
-          parsed.push({ type: 'heading4', content: text, level: 4 });
-        }
+        if (text.length <= 300) parsed.push({ type: 'heading4', content: text, level: 4 });
         break;
       case 'div':
       case 'p':
